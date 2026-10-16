@@ -21,7 +21,7 @@
   font-display: swap;
 }
 
-/* Layout: the name is a wide masthead; below it a sticky identity column (bio, links, contents)
+/* Layout: portrait beside a wide-set name as the masthead; below it a sticky identity column (bio, links, contents)
    sits beside a reverse-chronological paper ledger with the year hanging in the margin. */
 :root {
   --paper: #f5f6f2;
@@ -102,10 +102,10 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-
 /* Masthead */
 .masthead {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: end;
-  gap: 2rem;
-  padding-block: clamp(2.5rem, 7vw, 5.5rem) clamp(1.75rem, 3vw, 2.5rem);
+  gap: clamp(1.5rem, 3.5vw, 3rem);
+  padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(1.75rem, 3vw, 2.5rem);
   border-bottom: 1px solid var(--rule);
 }
 .name {
@@ -113,7 +113,7 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-
   font-family: var(--display);
   font-stretch: 125%;
   font-weight: 800;
-  font-size: clamp(2.5rem, 10.5vw, 6.75rem);
+  font-size: clamp(2.5rem, 8vw, 6.25rem);
   line-height: 0.9;
   letter-spacing: -0.025em;
 }
@@ -128,7 +128,7 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-
 }
 .role a { text-decoration-color: var(--rule); }
 .portrait {
-  width: clamp(7rem, 15vw, 11rem);
+  width: clamp(10rem, 20vw, 15rem);
   height: auto;
   aspect-ratio: 4 / 5;
   object-fit: cover;
@@ -288,7 +288,7 @@ main { min-width: 0; max-width: 46rem; }
 /* Phones and narrow windows */
 @media (max-width: 54rem) {
   .masthead { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
-  .portrait { order: -1; width: 7rem; }
+  .portrait { width: 10rem; }
   .layout { grid-template-columns: minmax(0, 1fr); }
   .aside { position: static; }
   .contents { flex-direction: row; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
