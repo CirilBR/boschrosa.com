@@ -9,7 +9,7 @@
 @font-face {
   font-family: "Newsreader";
   src: url("fonts/newsreader-italic.woff") format("woff");
-  font-weight: 400 500;
+  font-weight: 400 600;
   font-style: italic;
   font-display: swap;
 }
@@ -30,9 +30,7 @@
   --rule: #d8ddd7;
   --rule-strong: #aab3ae;
   --accent: #0b5d6b;
-  --accent-tint: #ddecee;
   --fresh: #7a4f00;
-  --fresh-tint: #f3e7cc;
 
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --text: "Newsreader", Charter, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
@@ -54,9 +52,7 @@
     --rule: #29322f;
     --rule-strong: #4c5753;
     --accent: #7cc4cf;
-    --accent-tint: #173539;
     --fresh: #e6c27c;
-    --fresh-tint: #372c12;
     color-scheme: dark;
   }
 }
@@ -67,9 +63,7 @@
   --rule: #29322f;
   --rule-strong: #4c5753;
   --accent: #7cc4cf;
-  --accent-tint: #173539;
   --fresh: #e6c27c;
-  --fresh-tint: #372c12;
   color-scheme: dark;
 }
 
@@ -213,28 +207,75 @@ main { min-width: 0; max-width: 46rem; }
   font-variant-numeric: tabular-nums lining-nums;
   padding-top: 0.2rem;
 }
-.chip {
-  display: inline-block;
-  font-family: var(--label);
-  font-size: var(--step--2);
-  font-weight: 600;
-  line-height: 1;
-  padding: 0.3rem 0.45rem;
-  border-radius: 3px;
-  background: var(--accent-tint);
-  color: var(--accent);
-}
-.chip.new { background: var(--fresh-tint); color: var(--fresh); }
+.mark.flag { color: var(--accent); font-weight: 600; }
+.mark.flag.new { color: var(--fresh); }
 .entry { min-width: 0; }
 .title { margin: 0; font-weight: 500; line-height: 1.35; text-wrap: pretty; }
 .title a { text-decoration-color: var(--rule-strong); }
 .authors, .venue, .extra { margin: 0.2rem 0 0; font-size: var(--step--1); line-height: 1.45; }
 .authors { color: var(--muted); }
 .authors a { text-decoration-color: var(--rule); }
-.venue cite { font-style: italic; }
+.venue cite { font-style: italic; font-weight: 600; color: var(--ink); }
 .venue .num { font-variant-numeric: lining-nums tabular-nums; color: var(--muted); }
 .status { color: var(--accent); }
 .extra a { color: var(--accent); text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+
+/* Sleeping dogs: folded by default; the dog wakes when the section opens */
+.fold > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.5rem 1.25rem;
+  padding-left: var(--mark-col);
+  border-radius: 3px;
+}
+.fold > summary::-webkit-details-marker { display: none; }
+.fold > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+.fold > summary h2 { margin: 0; padding-left: 0; }
+.fold[open] > summary { margin-bottom: 1.5rem; }
+
+.dog { width: 7.5rem; height: auto; flex: none; color: var(--ink); overflow: visible; }
+.dog .line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.dog .ground { fill: none; stroke: var(--rule-strong); stroke-width: 1.2; stroke-linecap: round; }
+.dog .dot { fill: currentColor; }
+.dog .z path { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.dog .eye-open { display: none; }
+.fold[open] .dog .eye-open { display: inline; }
+.fold[open] .dog .eye-shut,
+.fold[open] .dog .z { display: none; }
+
+.toggle {
+  margin-left: auto;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--label);
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--muted);
+}
+.fold > summary:hover .toggle { color: var(--accent); }
+.chev { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s ease; }
+.fold[open] .chev { transform: rotate(180deg); }
+.fold[open] .when-closed,
+.fold:not([open]) .when-open { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .dog .z path { animation: drift 3.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  .dog .z path:nth-child(2) { animation-delay: 1.2s; }
+  .dog .z path:nth-child(3) { animation-delay: 2.4s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chev { transition: none; }
+}
+@keyframes drift {
+  0% { opacity: 0; transform: translate(0, 3px); }
+  25%, 70% { opacity: 1; }
+  100% { opacity: 0; transform: translate(2px, -5px); }
+}
 
 .footer {
   border-top: 1px solid var(--rule);
