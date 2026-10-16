@@ -1,0 +1,279 @@
+/* Fonts are self-hosted on purpose: no requests to Google or any other third party. */
+@font-face {
+  font-family: "Newsreader";
+  src: url("fonts/newsreader.woff") format("woff");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Newsreader";
+  src: url("fonts/newsreader-italic.woff") format("woff");
+  font-weight: 400 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Archivo";
+  src: url("fonts/archivo.woff") format("woff");
+  font-weight: 500 800;
+  font-stretch: 100% 125%;
+  font-display: swap;
+}
+
+/* Layout: the name is a wide masthead; below it a sticky identity column (bio, links, contents)
+   sits beside a reverse-chronological paper ledger with the year hanging in the margin. */
+:root {
+  --paper: #f5f6f2;
+  --ink: #18211e;
+  --muted: #5a6561;
+  --rule: #d8ddd7;
+  --rule-strong: #aab3ae;
+  --accent: #0b5d6b;
+  --accent-tint: #ddecee;
+  --fresh: #7a4f00;
+  --fresh-tint: #f3e7cc;
+
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --text: "Newsreader", Charter, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --label: "Archivo", "Helvetica Neue", Arial, sans-serif;
+
+  --step--2: 0.75rem;
+  --step--1: 0.875rem;
+  --step-0: 1.125rem;
+  --step-1: 1.3125rem;
+  --step-2: 1.625rem;
+
+  --mark-col: 4.5rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #121715;
+    --ink: #e2e7e4;
+    --muted: #9aa5a0;
+    --rule: #29322f;
+    --rule-strong: #4c5753;
+    --accent: #7cc4cf;
+    --accent-tint: #173539;
+    --fresh: #e6c27c;
+    --fresh-tint: #372c12;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #121715;
+  --ink: #e2e7e4;
+  --muted: #9aa5a0;
+  --rule: #29322f;
+  --rule-strong: #4c5753;
+  --accent: #7cc4cf;
+  --accent-tint: #173539;
+  --fresh: #e6c27c;
+  --fresh-tint: #372c12;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: var(--step-0);
+  line-height: 1.55;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+img { max-width: 100%; display: block; }
+
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 0.2em;
+}
+a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.wrap { max-width: 72rem; margin-inline: auto; }
+
+/* Masthead */
+.masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 2rem;
+  padding-block: clamp(2.5rem, 7vw, 5.5rem) clamp(1.75rem, 3vw, 2.5rem);
+  border-bottom: 1px solid var(--rule);
+}
+.name {
+  margin: 0;
+  font-family: var(--display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 10.5vw, 6.75rem);
+  line-height: 0.9;
+  letter-spacing: -0.025em;
+}
+.name span { display: block; white-space: nowrap; }
+.role {
+  margin: 1.1rem 0 0;
+  font-family: var(--label);
+  font-size: var(--step-0);
+  font-weight: 500;
+  color: var(--muted);
+  line-height: 1.35;
+}
+.role a { text-decoration-color: var(--rule); }
+.portrait {
+  width: clamp(7rem, 15vw, 11rem);
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 3px;
+  background: var(--rule);
+}
+.portrait-empty {
+  display: grid;
+  place-items: center;
+  font-family: var(--label);
+  font-size: var(--step--2);
+  color: var(--muted);
+  text-align: center;
+  padding: 0.5rem;
+}
+
+/* Two-column body */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-block: clamp(2rem, 5vw, 3.5rem) 4rem;
+}
+.aside {
+  align-self: start;
+  position: sticky;
+  top: calc(2rem + env(safe-area-inset-top, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+.bio { margin: 0; text-wrap: pretty; }
+.contact { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.contact a { color: var(--accent); text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+.contact a:hover { text-decoration-color: var(--accent); }
+.contents { list-style: none; margin: 0; padding: 1.25rem 0 0; border-top: 1px solid var(--rule); display: flex; flex-direction: column; gap: 0.3rem; }
+.contents a {
+  font-family: var(--label);
+  font-size: var(--step--1);
+  font-weight: 500;
+  text-decoration: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.contents a:hover .label { text-decoration: underline; text-underline-offset: 0.2em; }
+.count { color: var(--muted); font-variant-numeric: tabular-nums lining-nums; font-weight: 500; }
+
+/* Paper ledger */
+main { min-width: 0; max-width: 46rem; }
+.section + .section { margin-top: clamp(3rem, 6vw, 4.5rem); }
+.section h2 {
+  margin: 0 0 1.5rem;
+  padding-left: var(--mark-col);
+  font-family: var(--display);
+  font-stretch: 112%;
+  font-weight: 700;
+  font-size: var(--step-2);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  scroll-margin-top: 1.5rem;
+}
+.section h2 .count { font-family: var(--label); font-size: var(--step--1); font-stretch: 100%; }
+.note { margin: -0.75rem 0 1.5rem; padding-left: var(--mark-col); color: var(--muted); font-size: var(--step--1); font-style: italic; }
+
+.papers { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.5rem; }
+.paper { display: grid; grid-template-columns: var(--mark-col) minmax(0, 1fr); }
+.mark {
+  font-family: var(--label);
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums lining-nums;
+  padding-top: 0.2rem;
+}
+.chip {
+  display: inline-block;
+  font-family: var(--label);
+  font-size: var(--step--2);
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.3rem 0.45rem;
+  border-radius: 3px;
+  background: var(--accent-tint);
+  color: var(--accent);
+}
+.chip.new { background: var(--fresh-tint); color: var(--fresh); }
+.entry { min-width: 0; }
+.title { margin: 0; font-weight: 500; line-height: 1.35; text-wrap: pretty; }
+.title a { text-decoration-color: var(--rule-strong); }
+.authors, .venue, .extra { margin: 0.2rem 0 0; font-size: var(--step--1); line-height: 1.45; }
+.authors { color: var(--muted); }
+.authors a { text-decoration-color: var(--rule); }
+.venue cite { font-style: italic; }
+.venue .num { font-variant-numeric: lining-nums tabular-nums; color: var(--muted); }
+.status { color: var(--accent); }
+.extra a { color: var(--accent); text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+
+.footer {
+  border-top: 1px solid var(--rule);
+  padding-block: 1.5rem 2.5rem;
+  font-family: var(--label);
+  font-size: var(--step--2);
+  color: var(--muted);
+}
+
+/* Phones and narrow windows */
+@media (max-width: 54rem) {
+  .masthead { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+  .portrait { order: -1; width: 7rem; }
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .aside { position: static; }
+  .contents { flex-direction: row; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
+  .contents a { justify-content: flex-start; gap: 0.4rem; }
+  :root { --mark-col: 3.75rem; }
+}
+@media (max-width: 26rem) {
+  :root { --mark-col: 0rem; }
+  .paper { grid-template-columns: minmax(0, 1fr); }
+  .mark:empty { display: none; }
+  .mark:has(> .sr:only-child) { padding: 0; }
+  .mark { padding: 0 0 0.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+@media print {
+  :root { --paper: #fff; --ink: #000; --muted: #333; --accent: #000; }
+  body { padding: 0; font-size: 11pt; }
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .aside { position: static; }
+  .contents, .portrait { display: none; }
+  a { text-decoration: none; }
+}
