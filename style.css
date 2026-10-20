@@ -43,7 +43,6 @@
   --step-2: 1.625rem;
 
   --mark-col: 4.5rem;
-  --name-size: clamp(2.5rem, 9vw, 7.5rem);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -101,17 +100,23 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-
 .wrap { max-width: 72rem; margin-inline: auto; }
 
 /* Masthead */
-/* The portrait is exactly as tall as the text beside it: its top sits on the cap height of
-   "Ciril" and its bottom on the baseline of the affiliation line. The numbers come from
+/* The square portrait is exactly as tall as the text beside it: its top sits on the cap height
+   of "Ciril" and its bottom on the baseline of the last affiliation line. The numbers come from
    Archivo's metrics (ascent 0.878, descent 0.210, cap height 0.686 em):
    - .name margin-top trims the space above the capitals: (0.9 - 1.088) / 2 + 0.878 - 0.686 = 0.098 em
-   - .role margin-bottom trims the space below the baseline: 1.35 - ((1.35 - 1.088) / 2 + 0.878) = 0.341 em
-   - text height = 1.8 x name - 0.098 x name + 1.1rem + 1.009 x 1.125rem = 1.702 x name + 2.235rem */
+   - .role margin-bottom trims the space below the last baseline: 1.35 - ((1.35 - 1.088) / 2 + 0.878) = 0.341 em
+   - text height = (1.8 - 0.098) x name + 1.25rem + (2 x 1.35 - 0.341) x 1.3125rem
+                 = 1.702 x name + 4.346rem  (this is also the photo's width, since it is square)
+   The name size is solved so that photo + gap + name fill the header exactly:
+   "Bosch-Rosa" is 7.279 x name wide, so 100cqw = 1.702 x name + 4.346rem + gap + 7.279 x name. */
 .masthead {
+  container-type: inline-size;
+  --hgap: clamp(1.5rem, 3vw, 2.5rem);
+  --name-size: clamp(2.5rem, calc((100cqw - var(--hgap) - 4.346rem) / 8.981 - 2px), 8rem);
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
-  gap: clamp(1.5rem, 3.5vw, 3rem);
+  gap: var(--hgap);
   padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 3.5vw, 3rem);
   border-bottom: 1px solid var(--rule);
 }
@@ -126,19 +131,19 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-
 }
 .name span { display: block; white-space: nowrap; }
 .role {
-  margin: 1.1rem 0 -0.341em;
+  margin: 1.25rem 0 -0.341em;
   font-family: var(--label);
-  font-size: var(--step-0);
+  font-size: var(--step-1);
   font-weight: 500;
   color: var(--muted);
   line-height: 1.35;
-  white-space: nowrap;
 }
+.role .line { display: block; white-space: nowrap; }
 .role a { text-decoration-color: var(--rule); }
 .portrait {
-  height: calc(1.702 * var(--name-size) + 2.235rem);
+  height: calc(1.702 * var(--name-size) + 4.346rem);
   width: auto;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1;
   object-fit: cover;
   border-radius: 3px;
   background: var(--rule);
@@ -295,9 +300,10 @@ main { min-width: 0; max-width: 46rem; }
 
 /* Too narrow for the name and photo side by side: stack them */
 @media (max-width: 44rem) {
-  .masthead { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
-  .portrait { width: 10rem; height: auto; }
-  .role { white-space: normal; margin-bottom: 0; }
+  .masthead { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; --name-size: clamp(2.5rem, 12.5cqw, 5.5rem); }
+  .portrait { width: 12rem; height: auto; }
+  .role { margin-bottom: 0; }
+  .role .line { white-space: normal; }
 }
 
 /* Phones and narrow windows */

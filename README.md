@@ -9,7 +9,7 @@ The paper PDFs are not stored here. They stay in `CirilBR/PaperRepository`, serv
 | `index.html` | All page content |
 | `style.css` | Design, light and dark themes, print layout |
 | `fonts/` | Newsreader and Archivo, subset to Latin (SIL Open Font License, texts included) |
-| `photo.jpg` | Portrait, 4:5; its displayed height follows the name beside it. Keep the file at least 640 × 800 px |
+| `photo.jpg` | Square portrait; its displayed size follows the name beside it. Keep the file at least 800 × 800 px |
 | `CNAME` | Tells GitHub Pages to serve the site at www.boschrosa.com |
 | `404.html`, `favicon.svg` | Not-found page and browser-tab icon |
 
