@@ -24,7 +24,7 @@
 /* Layout: one column. A wide-set name as the masthead; then the photo beside the bio, CV and email;
    then a pinned row of section links; then the paper ledger with the year hanging in the margin. */
 :root {
-  --paper: #f5f6f2;
+  --paper: #ffffff;
   --ink: #18211e;
   --muted: #5a6561;
   --rule: #d8ddd7;
