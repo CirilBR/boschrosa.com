@@ -9,13 +9,13 @@ The paper PDFs are not stored here. They stay in `CirilBR/PaperRepository`, serv
 | `index.html` | All page content |
 | `style.css` | Design, light and dark themes, print layout |
 | `fonts/` | Newsreader and Archivo, subset to Latin (SIL Open Font License, texts included) |
-| `photo.jpg` | Square portrait; its displayed size follows the name beside it. Keep the file at least 800 × 800 px |
+| `photo.jpg` | Square portrait, shown at up to 240 × 240 px. Keep the file at least 800 × 800 px |
 | `CNAME` | Tells GitHub Pages to serve the site at www.boschrosa.com |
 | `404.html`, `favicon.svg` | Not-found page and browser-tab icon |
 
 ## Adding or moving a paper
 
-Copy an existing `<li class="paper">…</li>` block in `index.html` and edit it. Then update the count in two places (the sidebar list and the section heading) and the "Last updated" line in the footer.
+Copy an existing `<li class="paper">…</li>` block in `index.html` and edit it. Then update the count in two places (the row of section links near the top and the section heading) and the "Last updated" line in the footer.
 
 In the publications list, the year sits in the left margin and is shown once per year. For a second paper in the same year, write the year as `<span class="mark"><span class="sr">2024</span></span>` so screen readers still hear it.
 

@@ -21,8 +21,8 @@
   font-display: swap;
 }
 
-/* Layout: portrait beside a wide-set name as the masthead; below it a sticky identity column (bio, links, contents)
-   sits beside a reverse-chronological paper ledger with the year hanging in the margin. */
+/* Layout: one column. A wide-set name as the masthead; then the photo beside the bio, CV and email;
+   then a pinned row of section links; then the paper ledger with the year hanging in the margin. */
 :root {
   --paper: #f5f6f2;
   --ink: #18211e;
@@ -97,52 +97,46 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-
 
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-.wrap { max-width: 72rem; margin-inline: auto; }
+.wrap { max-width: 60rem; margin-inline: auto; }
 
-/* Masthead */
-/* The square portrait is exactly as tall as the text beside it: its top sits on the cap height
-   of "Ciril" and its bottom on the baseline of the last affiliation line. The numbers come from
-   Archivo's metrics (ascent 0.878, descent 0.210, cap height 0.686 em):
-   - .name margin-top trims the space above the capitals: (0.9 - 1.088) / 2 + 0.878 - 0.686 = 0.098 em
-   - .role margin-bottom trims the space below the last baseline: 1.35 - ((1.35 - 1.088) / 2 + 0.878) = 0.341 em
-   - text height = (1.8 - 0.098) x name + 1.25rem + (2 x 1.35 - 0.341) x 1.3125rem
-                 = 1.702 x name + 4.346rem  (this is also the photo's width, since it is square)
-   The name size is solved so that photo + gap + name fill the header exactly:
-   "Bosch-Rosa" is 7.279 x name wide, so 100cqw = 1.702 x name + 4.346rem + gap + 7.279 x name. */
+/* Masthead: name and affiliation */
 .masthead {
   container-type: inline-size;
-  --hgap: clamp(1.5rem, 3vw, 2.5rem);
-  --name-size: clamp(2.5rem, calc((100cqw - var(--hgap) - 4.346rem) / 8.981 - 2px), 8rem);
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: start;
-  gap: var(--hgap);
-  padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 3.5vw, 3rem);
+  padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(1.75rem, 3vw, 2.5rem);
   border-bottom: 1px solid var(--rule);
 }
 .name {
-  margin: -0.098em 0 0;
+  margin: 0;
   font-family: var(--display);
   font-stretch: 125%;
   font-weight: 800;
-  font-size: var(--name-size);
+  /* "Bosch-Rosa" is 7.28 em wide, so 13cqw always fits it inside the header */
+  font-size: clamp(2.5rem, 13cqw, 7.5rem);
   line-height: 0.9;
   letter-spacing: -0.025em;
 }
 .name span { display: block; white-space: nowrap; }
 .role {
-  margin: 1.25rem 0 -0.341em;
+  margin: 1.1rem 0 0;
   font-family: var(--label);
   font-size: var(--step-1);
   font-weight: 500;
   color: var(--muted);
   line-height: 1.35;
 }
-.role .line { display: block; white-space: nowrap; }
 .role a { text-decoration-color: var(--rule); }
+
+/* About: photo beside the bio, CV and email */
+.intro {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding-block: clamp(2rem, 4vw, 3rem);
+}
 .portrait {
-  height: calc(1.702 * var(--name-size) + 4.346rem);
-  width: auto;
+  width: clamp(10rem, 24vw, 15rem);
+  height: auto;
   aspect-ratio: 1;
   object-fit: cover;
   border-radius: 3px;
@@ -157,41 +151,53 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-
   text-align: center;
   padding: 0.5rem;
 }
-
-/* Two-column body */
-.layout {
-  display: grid;
-  grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
-  gap: clamp(2rem, 6vw, 6rem);
-  padding-block: clamp(2rem, 5vw, 3.5rem) 4rem;
-}
-.aside {
-  align-self: start;
-  position: sticky;
-  top: calc(2rem + env(safe-area-inset-top, 0px));
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
-}
-.bio { margin: 0; text-wrap: pretty; }
+.intro-text { min-width: 0; max-width: 36rem; display: flex; flex-direction: column; gap: 1.25rem; }
+.bio { margin: 0; font-size: var(--step-1); line-height: 1.5; text-wrap: pretty; }
 .contact { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
 .contact a { color: var(--accent); text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent); }
 .contact a:hover { text-decoration-color: var(--accent); }
-.contents { list-style: none; margin: 0; padding: 1.25rem 0 0; border-top: 1px solid var(--rule); display: flex; flex-direction: column; gap: 0.3rem; }
+
+/* Section links: one row that stays at the top of the screen while reading the papers */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  background: var(--paper);
+}
+.sections {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  background: var(--paper);
+  border-block: 1px solid var(--rule);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+.contents {
+  list-style: none;
+  margin: 0;
+  padding: 0.9rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2.25rem;
+}
+.contents li { flex: none; }
 .contents a {
   font-family: var(--label);
-  font-size: var(--step--1);
-  font-weight: 500;
+  font-size: var(--step-0);
+  font-weight: 600;
   text-decoration: none;
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
 }
-.contents a:hover .label { text-decoration: underline; text-underline-offset: 0.2em; }
+.contents a:hover .label { color: var(--accent); text-decoration: underline; text-underline-offset: 0.2em; }
+.contents .count { font-size: var(--step--1); }
 .count { color: var(--muted); font-variant-numeric: tabular-nums lining-nums; font-weight: 500; }
 
 /* Paper ledger */
-main { min-width: 0; max-width: 46rem; }
+main { min-width: 0; max-width: 50rem; padding-bottom: 4rem; }
 .section + .section { margin-top: clamp(3rem, 6vw, 4.5rem); }
 .section h2 {
   margin: 0 0 1.5rem;
@@ -205,7 +211,7 @@ main { min-width: 0; max-width: 46rem; }
   display: flex;
   align-items: baseline;
   gap: 0.6rem;
-  scroll-margin-top: 1.5rem;
+  scroll-margin-top: 5.5rem;
 }
 .section h2 .count { font-family: var(--label); font-size: var(--step--1); font-stretch: 100%; }
 .note { margin: -0.75rem 0 1.5rem; padding-left: var(--mark-col); color: var(--muted); font-size: var(--step--1); font-style: italic; }
@@ -298,20 +304,11 @@ main { min-width: 0; max-width: 46rem; }
   color: var(--muted);
 }
 
-/* Too narrow for the name and photo side by side: stack them */
-@media (max-width: 44rem) {
-  .masthead { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; --name-size: clamp(2.5rem, 12.5cqw, 5.5rem); }
-  .portrait { width: 12rem; height: auto; }
-  .role { margin-bottom: 0; }
-  .role .line { white-space: normal; }
-}
-
-/* Phones and narrow windows */
-@media (max-width: 54rem) {
-  .layout { grid-template-columns: minmax(0, 1fr); }
-  .aside { position: static; }
-  .contents { flex-direction: row; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
-  .contents a { justify-content: flex-start; gap: 0.4rem; }
+/* Phones and narrow windows: photo above the bio, section row scrolls sideways */
+@media (max-width: 40rem) {
+  .intro { grid-template-columns: minmax(0, 1fr); }
+  .portrait { width: 12rem; }
+  .contents { flex-wrap: nowrap; overflow-x: auto; gap: 1.5rem; padding-block: 0.75rem; }
   :root { --mark-col: 3.75rem; }
 }
 @media (max-width: 26rem) {
@@ -332,8 +329,7 @@ main { min-width: 0; max-width: 46rem; }
 @media print {
   :root { --paper: #fff; --ink: #000; --muted: #333; --accent: #000; }
   body { padding: 0; font-size: 11pt; }
-  .layout { grid-template-columns: minmax(0, 1fr); }
-  .aside { position: static; }
-  .contents, .portrait { display: none; }
+  .sections, .portrait { display: none; }
+  .intro { grid-template-columns: minmax(0, 1fr); }
   a { text-decoration: none; }
 }
