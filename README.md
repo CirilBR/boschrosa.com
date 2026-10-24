@@ -27,7 +27,7 @@ GitHub Pages sites are always public once switched on (access control exists onl
 
 ## Launch checklist
 
-1. **HTTPS for the PDFs.** In `PaperRepository` → Settings → Pages, tick "Enforce HTTPS". Today https://papers.boschrosa.com redirects to plain http. Once HTTPS works, change the `http://papers.boschrosa.com` links in `index.html` to `https://`.
+1. **HTTPS for the PDFs.** Done: "Enforce HTTPS" is on for `PaperRepository`, and the paper links in `index.html` use https.
 2. **Verify the domain** (skip if done already). GitHub → your profile Settings → Pages → Add a domain → `boschrosa.com`, then add the TXT record it shows at your DNS provider. This stops anyone else from claiming your subdomains on GitHub.
 3. **Repository visibility.** On GitHub Free, Pages only works from public repositories: Settings → General → Change visibility → Public. On GitHub Pro the repository can stay private; the site is public either way.
 4. **Switch Pages on.** Settings → Pages → Source: "Deploy from a branch", branch `main`, folder `/ (root)`. The custom domain field should fill in as `www.boschrosa.com` from the `CNAME` file.
