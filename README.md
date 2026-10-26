@@ -19,21 +19,19 @@ Copy an existing `<li class="paper">…</li>` block in `index.html` and edit it.
 
 In the publications list, the year sits in the left margin and is shown once per year. For a second paper in the same year, write the year as `<span class="mark"><span class="sr">2024</span></span>` so screen readers still hear it.
 
-## Staying private until launch
+## Hosting
 
-The repository is private and GitHub Pages is switched off, so nothing here is reachable on the web. The old Google Site keeps serving www.boschrosa.com until the DNS change in step 5.
+The site is served by GitHub Pages from the `main` branch of this repository (folder `/`). Pushing to `main` publishes changes within a minute or two. The repository is public because GitHub Free only runs Pages from public repositories.
 
-GitHub Pages sites are always public once switched on (access control exists only on GitHub Enterprise Cloud), so switching Pages on is the launch.
+DNS for boschrosa.com is managed at Squarespace Domains (formerly Google Domains). The records that matter:
 
-## Launch checklist
+| Name | Type | Value | Purpose |
+|---|---|---|---|
+| `www` | CNAME | `cirilbr.github.io` | This site |
+| `@` | A | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` | Bare boschrosa.com; GitHub redirects it to www |
+| `papers` | CNAME | `cirilbr.github.io` | The PDFs, from `CirilBR/PaperRepository` |
+| `_github-pages-challenge-cirilbr` | TXT | (verification code) | Proves to GitHub that you own the domain. Keep it. |
 
-1. **HTTPS for the PDFs.** Done: "Enforce HTTPS" is on for `PaperRepository`, and the paper links in `index.html` use https.
-2. **Verify the domain** (skip if done already). GitHub → your profile Settings → Pages → Add a domain → `boschrosa.com`, then add the TXT record it shows at your DNS provider. This stops anyone else from claiming your subdomains on GitHub.
-3. **Repository visibility.** On GitHub Free, Pages only works from public repositories: Settings → General → Change visibility → Public. On GitHub Pro the repository can stay private; the site is public either way.
-4. **Switch Pages on.** Settings → Pages → Source: "Deploy from a branch", branch `main`, folder `/ (root)`. The custom domain field should fill in as `www.boschrosa.com` from the `CNAME` file.
-5. **Point DNS at GitHub** at your domain registrar:
-   - `www` → CNAME → `cirilbr.github.io` (replacing the Google Sites record, usually `ghs.googlehosted.com`)
-   - bare `boschrosa.com`, if you want it to work too → A records `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
-   - leave the `papers` record as it is
-6. **Wait and lock in HTTPS.** DNS changes can take up to 24 hours. Once Settings → Pages shows the domain check passing, tick "Enforce HTTPS".
-7. **Retire the Google Site.** Remove the custom domain mapping in Google Sites (or unpublish it).
+boschrosa.com is a verified domain in your GitHub account (Settings → Pages), so nobody else can claim its subdomains on GitHub. "Enforce HTTPS" is on for `papers.boschrosa.com` and should be on for this site too (Settings → Pages).
+
+The old Google Site no longer receives traffic. You can remove its custom domain in Google Sites (Settings → Custom domains) or delete it.
