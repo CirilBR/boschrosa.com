@@ -120,12 +120,21 @@ h2 {
   100% { opacity: 0; transform: translate(2px, -5px); }
 }
 
-/* Tablets and phones: one column, in the same order */
+/* Tablets and phones: one column. The column wrappers dissolve so the sections can be
+   reordered: photo and bio, working papers, publications, work in progress, sleeping dogs. */
 @media (max-width: 820px) {
   .site { padding-block: 40px 56px; }
   .name { font-size: 46px; margin-bottom: 36px; }
-  .columns { grid-template-columns: minmax(0, 1fr); gap: 44px; }
-  .about { width: 100%; max-width: 420px; margin-inline: auto; }
+  .columns { display: flex; flex-direction: column; gap: 44px; }
+  .col:not(.about) { display: contents; }
+  .col > section + section,
+  .col > details + section,
+  .col > section + details { margin-top: 0; }
+  .about { width: 100%; max-width: 420px; margin-inline: auto; order: 0; }
+  .wps { order: 1; }
+  .pubs { order: 2; }
+  .wip { order: 3; }
+  .fold { order: 4; }
 }
 @media (max-width: 420px) {
   .name { font-size: 38px; }
