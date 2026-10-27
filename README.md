@@ -32,6 +32,6 @@ DNS for boschrosa.com is managed at Squarespace Domains (formerly Google Domains
 | `papers` | CNAME | `cirilbr.github.io` | The PDFs, from `CirilBR/PaperRepository` |
 | `_github-pages-challenge-cirilbr` | TXT | (verification code) | Proves to GitHub that you own the domain. Keep it. |
 
-boschrosa.com is a verified domain in your GitHub account (Settings → Pages), so nobody else can claim its subdomains on GitHub. "Enforce HTTPS" is on for `papers.boschrosa.com` and should be on for this site too (Settings → Pages).
+boschrosa.com is a verified domain in your GitHub account (Settings → Pages), so nobody else can claim its subdomains on GitHub. "Enforce HTTPS" is on for both `www.boschrosa.com` and `papers.boschrosa.com` (Settings → Pages in each repository).
 
 The old Google Site no longer receives traffic. You can remove its custom domain in Google Sites (Settings → Custom domains) or delete it.
